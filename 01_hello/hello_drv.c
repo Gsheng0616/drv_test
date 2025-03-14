@@ -27,8 +27,9 @@
 
 
 static int major;
-static unsigned hello_buf[100];
+static unsigned char hello_buf[100];
 static int len;
+static struct class *hello_class;
 
 static int hello_open (struct inode *node, struct file *filp)
 {
@@ -41,7 +42,7 @@ static ssize_t hello_read (struct file * filp, char __user *buf, size_t size, lo
 	printk("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 	len = size > 100 ? 100 : size;
 	copy_to_user(buf, hello_buf, len);
-	return size;
+	return len;
 }
 
 static ssize_t hello_write (struct file *filp, const char __user *buf, size_t size, loff_t *offset)
@@ -49,7 +50,7 @@ static ssize_t hello_write (struct file *filp, const char __user *buf, size_t si
 	printk("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 	len = size > 100 ? 100 : size;
 	copy_from_user(hello_buf, buf, len);
-	return size;
+	return len;
 }
 
 static int hello_release(struct inode *inode, struct file *file)
@@ -73,12 +74,25 @@ static struct file_operations hello_drv = {
 static int hello_init(void)
 {
 	major = register_chrdev(0, "hello",&hello_drv);
+	//创建类
+	hello_class = class_create(THIS_MODULE, "hello_class"); 
+	if (IS_ERR(hello_class)) 
+	{
+		printk(KERN_ERR "class_create() failed for hello_class\n");
+		return PTR_ERR(hello_class);
+
+	}
+
+	//创建设备
+	device_create(hello_class, NULL, MKDEV(major, 0), NULL, "hello"); 
 	return 0;
 }
 
 static void hello_exit(void)
 {
 	unregister_chrdev(major, "hello");
+	device_destroy(hello_class, MKDEV(major, 0));
+	class_destroy(hello_class);
 }
 
 //入口

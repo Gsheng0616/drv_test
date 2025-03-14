@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	{
 		len = read(fd, buf, 100);
 		buf[99] = '\n';
-		printf("read ret = %d\n",len );
+		printf("read %s ret = %d\n",buf,len );
 	}
 
 	return 0;
