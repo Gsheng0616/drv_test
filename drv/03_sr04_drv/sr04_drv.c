@@ -99,6 +99,8 @@ static ssize_t gpio_drv_read (struct file *file, char __user *buf, size_t size, 
 	
 	wait_event_interruptible(gpio_wait, !is_key_buf_empty());
 	key = get_key();
+	if(key == -1)
+		return -ENODATA;
 	err = copy_to_user(buf, &key, 4);
 	
 	return 4;
@@ -129,6 +131,9 @@ static long ioctl_trig(struct file *filp, unsigned int cmd, unsigned long arg)
 			gpio_set_value(gpios[0].gpio, 1);
 			udelay(20);
 			gpio_set_value(gpios[0].gpio, 0);
+
+			//启动定时器
+			mod_timer(&gpios[1].key_timer, jiffies + msecs_to_jiffies(50));
 		}
 	}
 
@@ -136,6 +141,14 @@ static long ioctl_trig(struct file *filp, unsigned int cmd, unsigned long arg)
 	return 0;
 }
 
+static void sr04_timer_func(unsigned long data)
+{
+		//唤醒读程序
+		put_key(-1);
+		wake_up_interruptible(&gpio_wait);
+		kill_fasync(&button_fasync, SIGIO, POLL_IN);
+
+}
 /* 定义自己的file_operations结构体                                              */
 static struct file_operations gpio_key_drv = {
 	.owner	 = THIS_MODULE,
@@ -169,7 +182,9 @@ static irqreturn_t gpio_sr04_isr(int irq, void *dev_id)
 		}
 		rising_time = ktime_get_ns() - rising_time;
 	
-
+		//删除定时器
+		del_timer(&gpios[1].key_timer);
+		
 		put_key(rising_time);
 		rising_time = 0;
 		wake_up_interruptible(&gpio_wait);
@@ -200,6 +215,8 @@ static int __init gpio_drv_init(void)
 
 	err = request_irq(gpios[1].irq, gpio_sr04_isr, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, gpios[1].name, &gpios[1]);
 
+	//设置定时器
+	setup_timer(&gpios[1].key_timer, sr04_timer_func, (unsigned long)&gpios[1]);
 
 	/* 注册file_operations 	*/
 	major = register_chrdev(0, "100ask_sr04", &gpio_key_drv);  /* /dev/gpio_desc */
@@ -229,6 +246,7 @@ static void __exit gpio_drv_exit(void)
 
 	gpio_free(gpios[0].gpio);
 	free_irq(gpios[1].irq, &gpios[1]);
+	del_timer(&gpios[1].key_timer);
 }
 
 
