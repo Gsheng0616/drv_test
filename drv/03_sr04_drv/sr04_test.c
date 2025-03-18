@@ -41,15 +41,25 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	fds[0].fd = fd;
+	fds[0].events = POLLIN;
+
 	while(1)
 	{
 		ioctl(fd, TRIG_CMD);
-		if (read(fd, &val, 4) == 4)
-			printf("get distance: %d cm\n", val*17/1000000);
+		ret = poll(fds, 1, 5000);
+		if(1 == ret)
+		{
+			if (read(fd, &val, 4) == 4)
+				printf("get distance: %d cm\n", val*17/1000000);
+			else
+				printf("get distance: -1\n");
+			sleep(1);
+		}
 		else
-			printf("get distance: -1\n");
-
-		sleep(1);
+		{
+			printf("get distance: err\n");
+		}
 	}
 
 
