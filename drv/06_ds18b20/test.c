@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 		else
 			printf("get button: -1\n");
 
-		sleep(1);
+		sleep(5);
 	}
 
 
