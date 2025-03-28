@@ -25,8 +25,6 @@
 
 #include <linux/uaccess.h>
 
-//fsfsfsfd
-//fsfsfsfs
 static int major;
 static unsigned char hello_buf[100];
 static int len;
@@ -62,8 +60,6 @@ static int hello_release(struct inode *inode, struct file *file)
 	printk("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 	return 0;
 }
-
-//ujtgfujtfytfytfyrtyrtyrtyryryryryr
 
 //create file_operations
 static struct file_operations hello_drv = {
@@ -120,6 +116,3 @@ module_init(hello_init);
 //出口
 module_exit(hello_exit);
 MODULE_LICENSE("GPL");
-
-
-
