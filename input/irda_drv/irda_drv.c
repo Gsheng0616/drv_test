@@ -25,7 +25,7 @@
 #include <linux/fcntl.h>
 #include <linux/timer.h>
 
-
+//作者g生rsefsdf
 
 static int irq;
 static int isr_cont = 0;
