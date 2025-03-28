@@ -24,7 +24,7 @@
 #include <linux/uio.h>
 
 #include <linux/uaccess.h>
-
+//autor damdklajfksjfjsl;fjslkfj
 
 static int major;
 static unsigned char hello_buf[100];
@@ -122,3 +122,4 @@ MODULE_LICENSE("GPL");
 
 
 
+//dasfsaopfisafjhkol
