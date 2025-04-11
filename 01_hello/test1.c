@@ -30,3 +30,13 @@ void func()
 //s
 //
 //
+
+int main()  
+{
+    int a = 10;
+    int *p = &a;
+    printf("address [0x%p]\r\n", p);
+    *p = 20;
+    printf("a = %d\r\n", a);
+    return 0;
+}
