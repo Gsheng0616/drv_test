@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+//daddadasd
 int main(int argc, char * argv [ ])
 {	
 	int *p = NULL;
@@ -9,4 +9,16 @@ int main(int argc, char * argv [ ])
 	
     return 0;
 }
-
+//fsfsfwrwrwe
+//fsdsfs
+//fs
+//fs
+//f
+//s
+//fs
+//
+//f
+//sf
+//s
+//
+//
