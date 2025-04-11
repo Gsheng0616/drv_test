@@ -9,16 +9,13 @@ int main(int argc, char * argv [ ])
 	
     return 0;
 }
-//fsfsfwrwrwe
-//fsdsfs
-//fs
-//fs
-//f
-//s
-//fs
-//
-//f
-//sf
-//s
-//
-//
+
+int main()  
+{
+    int a = 10;
+    int *p = &a;
+    printf("address [0x%p]\r\n", p);
+    *p = 20;
+    printf("a = %d\r\n", a);
+    return 0;
+}
