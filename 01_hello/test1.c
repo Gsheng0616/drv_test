@@ -9,6 +9,14 @@ int main(int argc, char * argv [ ])
 	
     return 0;
 }
+void func()    
+{
+    int *p = NULL;
+    printf("address [0x%p]\r\n", p);    
+    *p = 0;
+    printf("address [0x%p]\r\n", p);    
+    
+}
 //fsfsfwrwrwe
 //fsdsfs
 //fs
