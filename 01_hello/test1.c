@@ -53,6 +53,8 @@ int binarySearch(int arr[], int size, int target)
                         
         }
     }
+    return -1;
+}
 
 int bubble_sort(int *a, int len)
 {
