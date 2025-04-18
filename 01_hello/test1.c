@@ -9,14 +9,27 @@ int main(int argc, char * argv [ ])
 	
     return 0;
 }
-
-int main()  
+void func()    
 {
-    int a = 10;
-    int *p = &a;
-    printf("address [0x%p]\r\n", p);
-    *p = 20;
-    printf("a = %d\r\n", a);
+    int *p = NULL;
+    printf("address [0x%p]\r\n", p);    
+    *p = 0;
+    printf("address [0x%p]\r\n", p);    
+    
+}
+
+int main() {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    printf("原始数组: ");
+    printArray(arr, n);
+    
+    bubbleSort(arr, n);
+    
+    printf("排序后的数组: ");
+    printArray(arr, n);
+    
     return 0;
 }
 int binarySearch(int arr[], int size, int target)
